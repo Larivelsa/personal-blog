@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-lg-8 mx-auto">
+            <h1 class="mb-4">Welcome to My Personal Blog</h1>
+            
+            {% if articles %}
+                {% for article in articles %}
+                <div class="card mb-4 shadow-sm">
+                    <div class="card-body">
+                        <h2 class="card-title">
+                            <a href="{{ url_for('view_article', article_id=article.id) }}" class="text-decoration-none text-dark">
+                                {{ article.title }}
+                            </a>
+                        </h2>
+                        <p class="text-muted mb-3">
+                            <small>
+                                Published on: {{ article.publication_date[:10] }}
+                            </small>
+                        </p>
+                        <p class="card-text">
+                            {{ article.content[:200] }}{% if article.content|length > 200 %}...{% endif %}
+                        </p>
+                        <a href="{{ url_for('view_article', article_id=article.id) }}" class="btn btn-primary">
+                            Read More
+                        </a>
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <div class="alert alert-info">
+                    <h4>No articles yet!</h4>
+                    <p>Check back soon for new content.</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
+

@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container mt-4" style="max-width: 800px;">
+  <h1 class="mb-4">{% if is_edit %}Edit Article{% else %}Create New Article{% endif %}</h1>
+  <form method="POST" action="{% if is_edit %}{{ url_for('edit_article', article_id=article.id) }}{% else %}{{ url_for('add_article') }}{% endif %}">
+    {{ form.csrf_token }}
+    <div class="mb-3">
+      <label for="{{ form.article_title.id }}" class="form-label">Article Title</label>
+      {{ form.article_title(class="form-control", placeholder="Enter article title") }}
+      {% if form.article_title.errors %}
+        <div class="text-danger">
+          {% for error in form.article_title.errors %}
+            <small>{{ error }}</small>
+          {% endfor %}
+        </div>
+      {% endif %}
+    </div>
+    <div class="mb-3">
+      <label for="{{ form.publication_date.id }}" class="form-label">Publication Date</label>
+      {{ form.publication_date(class="form-control") }}
+      {% if form.publication_date.errors %}
+        <div class="text-danger">
+          {% for error in form.publication_date.errors %}
+            <small>{{ error }}</small>
+          {% endfor %}
+        </div>
+      {% endif %}
+    </div>
+    <div class="mb-3">
+      <label for="{{ form.article_content.id }}" class="form-label">Article Content</label>
+      {{ form.article_content(class="form-control", rows="15", placeholder="Write your article content here...") }}
+      {% if form.article_content.errors %}
+        <div class="text-danger">
+          {% for error in form.article_content.errors %}
+            <small>{{ error }}</small>
+          {% endfor %}
+        </div>
+      {% endif %}
+    </div>
+    <div class="mb-3">
+      <button type="submit" class="btn btn-primary">{% if is_edit %}Update Article{% else %}Publish Article{% endif %}</button>
+      {% if is_edit %}
+        <a href="{{ url_for('view_article', article_id=article.id) }}" class="btn btn-secondary">Cancel</a>
+      {% else %}
+        <a href="{{ url_for('home') }}" class="btn btn-secondary">Cancel</a>
+      {% endif %}
+    </div>
+  </form>
+</div>
+
+{% endblock %}
